@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台股本益比評價與法人級價值選股系統 - 實時看板 Live Demo</title>
-    <!-- 引入高質感 Google 字型 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- 引入 Tailwind CSS 進行排版 -->
+    <title>台股本益比評價與法人級價值選股系統 - 賽博龐克金屬終端</title>
+    <!-- 引入高品質與科技感 Google 字型 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;500;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,262 +14,357 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
-                        title: ['Outfit', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
                     },
                     colors: {
-                        navy: {
-                            50: '#f4f6fa',
-                            900: '#0f172a',
-                            950: '#020617',
-                        },
-                        gold: '#f59e0b',
+                        cyber: {
+                            dark: '#08090d',
+                            metal: '#0f111a',
+                            pink: '#ff0055',
+                            cyan: '#00f0ff',
+                            gold: '#ffe600',
+                            grey: '#1a1c29',
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        .glass {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glow {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
-        }
+        /* 賽博龐克金屬拉絲與網格背景 */
         body {
-            background-color: #020617;
+            background-color: #08090d;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.04) 0px, transparent 50%);
+                linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.007) 1px, transparent 1px),
+                radial-gradient(at 0% 0%, rgba(255, 0, 85, 0.07) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(0, 240, 255, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(255, 230, 0, 0.03) 0px, transparent 50%);
+            background-size: 25px 25px, 25px 25px, 100% 100%, 100% 100%, 100% 100%;
+        }
+
+        /* 金屬板外觀與霓虹邊框發光 */
+        .cyber-card {
+            background: linear-gradient(145deg, #11131f 0%, #090a10 100%);
+            border-left: 4px solid #ff0055;
+            border-bottom: 2px solid #00f0ff;
+            border-right: 1px solid rgba(0, 240, 255, 0.1);
+            border-top: 1px solid rgba(255, 0, 85, 0.1);
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.015),
+                inset 0 0 2px rgba(0, 240, 255, 0.2),
+                0 10px 30px rgba(0, 0, 0, 0.7),
+                0 0 15px rgba(255, 0, 85, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card-blue {
+            background: linear-gradient(145deg, #11131f 0%, #090a10 100%);
+            border-left: 4px solid #00f0ff;
+            border-bottom: 2px solid #ff0055;
+            border-right: 1px solid rgba(255, 0, 85, 0.1);
+            border-top: 1px solid rgba(0, 240, 255, 0.1);
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.015),
+                inset 0 0 2px rgba(255, 0, 85, 0.2),
+                0 10px 30px rgba(0, 0, 0, 0.7),
+                0 0 15px rgba(0, 240, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 賽博龐克45度切角金屬按鈕 */
+        .cyber-btn {
+            clip-path: polygon(0 0, 92% 0, 100% 30%, 100% 100%, 8% 100%, 0 70%);
+            background: linear-gradient(90deg, #ff0055 0%, #e6004c 100%);
+            border: none;
+            color: #08090d;
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+        }
+        .cyber-btn:hover {
+            background: #00f0ff;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+            transform: scale(1.02);
+        }
+
+        /* 警示斜紋黃黑裝飾 */
+        .cyber-stripes {
+            background: repeating-linear-gradient(
+                -45deg,
+                #ffe600,
+                #ffe600 6px,
+                #08090d 6px,
+                #08090d 12px
+            );
+        }
+
+        /* 細金屬線裝飾 */
+        .cyber-tech-line {
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+            height: 1px;
+            width: 100%;
         }
     </style>
 </head>
-<body class="text-slate-100 font-sans min-h-screen py-10 px-4 md:px-8">
+<body class="text-slate-200 min-h-screen py-10 px-4 md:px-8">
     <div class="max-w-7xl mx-auto">
-        <!-- 頂部 Header -->
-        <header class="glass glow rounded-3xl p-6 md:p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all duration-300">
-            <div>
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl">📈</span>
-                    <h1 class="text-2xl md:text-3xl font-bold font-title bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-blue-500 to-amber-400">
-                        台股本益比評價與法人級選股系統
-                    </h1>
+        
+        <!-- 頂部 Cyberpunk 金屬大面板 Header -->
+        <header class="cyber-card glow rounded-br-3xl p-6 md:p-8 mb-8">
+            <!-- 背景網格微光裝飾 -->
+            <div class="absolute right-0 top-0 w-24 h-24 cyber-stripes opacity-15"></div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl animate-pulse text-cyber-pink font-mono">[SYS_LOAD]</span>
+                        <h1 class="text-2xl md:text-4xl font-extrabold font-tech tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyber-pink via-cyber-cyan to-cyber-gold">
+                            TAIWAN QUANT VALUATION TERMINAL
+                        </h1>
+                    </div>
+                    <p class="text-slate-400 text-xs md:text-sm font-mono mt-3 flex items-center gap-2">
+                        <span class="text-cyber-cyan">&gt; SYSTEM_STATUS: ONLINE</span> | 
+                        <span class="text-cyber-pink">&gt; MODEL: MULTI_FACTOR_VALUE_ENGINE_V1</span>
+                    </p>
                 </div>
-                <p class="text-slate-400 text-sm md:text-base mt-2">
-                    結合 P/E 合理估值、Piotroski F-Score、DCF 內在價值與法人多因子綜合評分之量化系統。
-                </p>
-            </div>
-            <div class="flex flex-col items-end md:items-end">
-                <span class="bg-emerald-500/10 text-emerald-400 text-xs px-3 py-1 rounded-full border border-emerald-500/20 font-semibold mb-2 flex items-center gap-1.5">
-                    <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Live Demo 運行中
-                </span>
-                <p class="text-xs text-slate-500 font-mono" id="update-time">
-                    當前系統時間: 2026-06-02
-                </p>
+                
+                <!-- 系統控制板 -->
+                <div class="flex flex-col items-start md:items-end border-l-2 border-cyber-cyan/30 pl-4 md:pl-0 md:border-l-0 md:border-r-2 md:border-cyber-pink/30 pr-4 font-mono">
+                    <span class="bg-cyber-cyan/10 text-cyber-cyan text-[10px] px-3 py-1 rounded-sm border border-cyber-cyan/20 font-bold mb-2 flex items-center gap-1.5 shadow-[0_0_10px_rgba(0,240,255,0.15)]">
+                        <span class="h-1.5 w-1.5 rounded-full bg-cyber-cyan animate-ping"></span>
+                        LIVE_SCANNING_ACTIVE
+                    </span>
+                    <p class="text-[11px] text-slate-500" id="update-time">
+                        UTC_CLOCK: 2026-06-02 // CORE_LOAD: 100%
+                    </p>
+                </div>
             </div>
         </header>
 
-        <!-- 系統選股核心說明 -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="glass rounded-2xl p-5 hover:border-emerald-500/30 transition-all duration-300">
-                <div class="text-emerald-400 text-2xl mb-3">🛡️ Piotroski F-Score</div>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    以九大財務安全性指標為核心，篩選公司獲利能力、資產負債表與經營效率，徹底排除虛胖地雷股。
+        <!-- 科技細裝飾線 -->
+        <div class="cyber-tech-line mb-8"></div>
+
+        <!-- 賽博龐克模組卡片說明 -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 font-mono text-xs">
+            <div class="cyber-card p-5 hover:scale-[1.01] transition-all">
+                <div class="text-cyber-pink font-tech font-bold text-sm mb-3 flex items-center justify-between border-b border-cyber-pink/20 pb-2">
+                    <span>[01/SAFETY_SCORE]</span>
+                    <span class="text-slate-400 font-normal">F_SCORE</span>
+                </div>
+                <p class="text-slate-400 leading-relaxed">
+                    以九大財務安全性指標為核心，進行全天候資產負債與流動性解碼，100% 排除虛肥地雷股。
                 </p>
             </div>
-            <div class="glass rounded-2xl p-5 hover:border-blue-500/30 transition-all duration-300">
-                <div class="text-blue-400 text-2xl mb-3">💎 綜合價值分數 (Value Score)</div>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    法人多因子模型公式：<br>
-                    <span class="text-blue-300 font-semibold">40% PE + 20% PB + 20% ROE + 10% FCF + 10% 成長率</span><br>
+            
+            <div class="cyber-card-blue p-5 hover:scale-[1.01] transition-all">
+                <div class="text-cyber-cyan font-tech font-bold text-sm mb-3 flex items-center justify-between border-b border-cyber-cyan/20 pb-2">
+                    <span>[02/METALLIC_WEIGHTS]</span>
+                    <span class="text-slate-400 font-normal">FACTORS</span>
+                </div>
+                <p class="text-slate-400 leading-relaxed">
+                    法人多因子權重評分比率：<br>
+                    <span class="text-cyber-cyan font-bold">40% PE + 20% PB + 20% ROE + 10% FCF + 10% Growth</span><br>
                     對全市場股票進行百分位排序排名，科學精準。
                 </p>
             </div>
-            <div class="glass rounded-2xl p-5 hover:border-amber-500/30 transition-all duration-300">
-                <div class="text-amber-400 text-2xl mb-3">⚖️ 雙重估值模型</div>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    結合<strong>自由現金流折現 (DCF)</strong> 與<strong>高登股息成長模型 (Gordon)</strong>，交互印證收盤價是否低於股票真實內在價值。
+            
+            <div class="cyber-card p-5 hover:scale-[1.01] transition-all">
+                <div class="text-cyber-gold font-tech font-bold text-sm mb-3 flex items-center justify-between border-b border-cyber-gold/20 pb-2">
+                    <span>[03/INTRINSIC_VALUE]</span>
+                    <span class="text-slate-400 font-normal">VALUATION</span>
+                </div>
+                <p class="text-slate-400 leading-relaxed">
+                    同時載入<strong>自由現金流折現 (DCF)</strong> 與<strong>高登股息成長模型 (Gordon)</strong> 雙引擎，交互交叉驗證得出股票真正內在估值。
                 </p>
             </div>
         </section>
 
-        <!-- 主體內容: 左邊排行，右邊核心散佈圖 -->
+        <!-- 主體控制台: 排行榜 與 氣泡圖 -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
-            <!-- 價值投資選股排行 (前 10 名) -->
-            <div class="glass rounded-3xl p-6 lg:col-span-7 overflow-x-auto glow">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold font-title flex items-center gap-2 text-emerald-400">
-                        🔥 台灣價值投資排行榜 TOP 10
+            <!-- 賽博龐克金屬排行榜 -->
+            <div class="cyber-card p-6 lg:col-span-7 overflow-x-auto">
+                <div class="flex justify-between items-center border-b border-cyber-pink/20 pb-4 mb-6">
+                    <h2 class="text-lg font-bold font-tech text-cyber-pink tracking-wider flex items-center gap-2">
+                        &gt; TAIWAN_VALUE_INVEST_TOP_10
                     </h2>
-                    <a href="outputs/PE_Ranking.xlsx" download class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs py-2 px-4 rounded-xl transition-all shadow-lg flex items-center gap-1.5">
-                        📥 下載 Excel 完整報表
+                    <a href="outputs/PE_Ranking.xlsx" download class="cyber-btn text-xs py-2 px-5 font-bold tracking-widest text-center">
+                        EXPORT_EXCEL
                     </a>
                 </div>
-                <table class="w-full text-left border-collapse text-sm">
+                <table class="w-full text-left border-collapse text-xs font-mono">
                     <thead>
-                        <tr class="border-b border-slate-800 text-slate-400 font-semibold">
-                            <th class="py-3 px-2 text-center">排名</th>
-                            <th class="py-3 px-2">代號與名稱</th>
-                            <th class="py-3 px-2 text-right">股價</th>
-                            <th class="py-3 px-2 text-right">合理價</th>
-                            <th class="py-3 px-2 text-right text-amber-400">低估率</th>
-                            <th class="py-3 px-2 text-right text-emerald-400">ROE</th>
-                            <th class="py-3 px-2 text-center">體質狀態</th>
+                        <tr class="border-b border-slate-800 text-slate-400 uppercase font-semibold tracking-wider">
+                            <th class="py-3 px-2 text-center text-cyber-cyan">RANK</th>
+                            <th class="py-3 px-2">TICKER_NAME</th>
+                            <th class="py-3 px-2 text-right">CLOSE</th>
+                            <th class="py-3 px-2 text-right">FAIR</th>
+                            <th class="py-3 px-2 text-right text-cyber-pink">DISCOUNT</th>
+                            <th class="py-3 px-2 text-right text-cyber-cyan">ROE</th>
+                            <th class="py-3 px-2 text-center">HEALTH</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800/50">
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center font-bold text-emerald-400">1</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2357</span> <span class="font-bold text-slate-200">華碩</span></td>
-                            <td class="py-4 px-2 text-right font-mono">837.00</td>
-                            <td class="py-4 px-2 text-right font-mono">1,084.27</td>
-                            <td class="py-4 px-2 text-right font-mono text-amber-400 font-semibold">+29.54%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">18.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-md border border-emerald-500/20">優良體質</span></td>
+                    <tbody class="divide-y divide-slate-800/30">
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center font-bold text-cyber-pink">01</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">2603</span> <span class="text-slate-200">長榮</span> <span class="text-[9px] bg-cyber-pink/20 text-cyber-pink px-1 rounded">循環</span></td>
+                            <td class="py-4 px-2 text-right">224.00</td>
+                            <td class="py-4 px-2 text-right">348.08</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+55.39%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">12.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center font-bold text-amber-400">2</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">1301</span> <span class="font-bold text-slate-200">台塑</span></td>
-                            <td class="py-4 px-2 text-right font-mono">50.00</td>
-                            <td class="py-4 px-2 text-right font-mono">50.15</td>
-                            <td class="py-4 px-2 text-right font-mono text-amber-400 font-semibold">+0.30%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">11.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-slate-700/30 text-slate-400 text-xs px-2.5 py-1 rounded-md">待觀察</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center font-bold text-cyber-pink">02</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">2615</span> <span class="text-slate-200">萬海</span> <span class="text-[9px] bg-cyber-pink/20 text-cyber-pink px-1 rounded">循環</span></td>
+                            <td class="py-4 px-2 text-right">37.52</td>
+                            <td class="py-4 px-2 text-right">53.80</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+43.39%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">12.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center font-bold text-amber-400">3</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2002</span> <span class="font-bold text-slate-200">中鋼</span> <span class="text-xs bg-slate-800 text-slate-500 px-1 py-0.5 rounded">景氣</span></td>
-                            <td class="py-4 px-2 text-right font-mono">19.10</td>
-                            <td class="py-4 px-2 text-right font-mono">19.13</td>
-                            <td class="py-4 px-2 text-right font-mono text-amber-400 font-semibold">+0.16%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">6.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-slate-700/30 text-slate-400 text-xs px-2.5 py-1 rounded-md">待觀察</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center font-bold text-cyber-pink">03</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">5474</span> <span class="text-slate-200">聰泰</span></td>
+                            <td class="py-4 px-2 text-right">57.96</td>
+                            <td class="py-4 px-2 text-right">77.14</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+33.09%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">9.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center text-slate-400">4</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">1326</span> <span class="font-bold text-slate-200">台化</span></td>
-                            <td class="py-4 px-2 text-right font-mono">53.80</td>
-                            <td class="py-4 px-2 text-right font-mono">53.01</td>
-                            <td class="py-4 px-2 text-right font-mono text-red-400">-1.47%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">11.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-slate-700/30 text-slate-400 text-xs px-2.5 py-1 rounded-md">待觀察</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center font-bold text-cyber-pink">04</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">6756</span> <span class="text-slate-200">威鋒電子</span></td>
+                            <td class="py-4 px-2 text-right">46.88</td>
+                            <td class="py-4 px-2 text-right">62.27</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+32.83%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">18.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-cyber-cyan/10 text-cyber-cyan text-[10px] px-2 py-0.5 border border-cyber-cyan/20">HEALTHY</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center text-slate-400">5</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2014</span> <span class="font-bold text-slate-200">中鴻</span> <span class="text-xs bg-slate-800 text-slate-500 px-1 py-0.5 rounded">景氣</span></td>
-                            <td class="py-4 px-2 text-right font-mono">18.50</td>
-                            <td class="py-4 px-2 text-right font-mono">18.22</td>
-                            <td class="py-4 px-2 text-right font-mono text-red-400">-1.51%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">6.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-slate-700/30 text-slate-400 text-xs px-2.5 py-1 rounded-md">待觀察</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center font-bold text-cyber-pink">05</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">2254</span> <span class="text-slate-200">巨鎧精密</span></td>
+                            <td class="py-4 px-2 text-right">75.88</td>
+                            <td class="py-4 px-2 text-right">100.58</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+32.55%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">9.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center text-slate-400">6</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2330</span> <span class="font-bold text-slate-200">台積電</span></td>
-                            <td class="py-4 px-2 text-right font-mono">850.00</td>
-                            <td class="py-4 px-2 text-right font-mono">836.00</td>
-                            <td class="py-4 px-2 text-right font-mono text-red-400">-1.65%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">28.50%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-md border border-emerald-500/20">優良體質</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center text-slate-400">06</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">2357</span> <span class="text-slate-200">華碩</span></td>
+                            <td class="py-4 px-2 text-right">837.00</td>
+                            <td class="py-4 px-2 text-right">1,094.98</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+30.82%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">18.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-cyber-cyan/10 text-cyber-cyan text-[10px] px-2 py-0.5 border border-cyber-cyan/20">HEALTHY</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center text-slate-400">7</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2408</span> <span class="font-bold text-slate-200">南亞科</span> <span class="text-xs bg-slate-800 text-slate-500 px-1 py-0.5 rounded">景氣</span></td>
-                            <td class="py-4 px-2 text-right font-mono">65.00</td>
-                            <td class="py-4 px-2 text-right font-mono">63.00</td>
-                            <td class="py-4 px-2 text-right font-mono text-red-400">-3.08%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">6.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-slate-700/30 text-slate-400 text-xs px-2.5 py-1 rounded-md">待觀察</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center text-slate-400">07</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">2014</span> <span class="text-slate-200">中鴻</span> <span class="text-[9px] bg-cyber-pink/20 text-cyber-pink px-1 rounded">循環</span></td>
+                            <td class="py-4 px-2 text-right">18.50</td>
+                            <td class="py-4 px-2 text-right">22.05</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+19.19%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">6.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center text-slate-400">8</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2882</span> <span class="font-bold text-slate-200">國泰金</span></td>
-                            <td class="py-4 px-2 text-right font-mono">58.00</td>
-                            <td class="py-4 px-2 text-right font-mono">55.00</td>
-                            <td class="py-4 px-2 text-right font-mono text-red-400">-5.17%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">11.50%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-md border border-emerald-500/20">優良體質</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center text-slate-400">08</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">2609</span> <span class="text-slate-200">陽明</span> <span class="text-[9px] bg-cyber-pink/20 text-cyber-pink px-1 rounded">循環</span></td>
+                            <td class="py-4 px-2 text-right">170.00</td>
+                            <td class="py-4 px-2 text-right">190.00</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+11.76%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">12.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
-                            <td class="py-4 px-2 text-center text-slate-400">9</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2324</span> <span class="font-bold text-slate-200">仁寶</span></td>
-                            <td class="py-4 px-2 text-right font-mono">35.00</td>
-                            <td class="py-4 px-2 text-right font-mono">33.00</td>
-                            <td class="py-4 px-2 text-right font-mono text-red-400">-5.71%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">18.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-md border border-emerald-500/20">優良體質</span></td>
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
+                            <td class="py-4 px-2 text-center text-slate-400">09</td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">1101</span> <span class="text-slate-200">台泥</span></td>
+                            <td class="py-4 px-2 text-right">24.55</td>
+                            <td class="py-4 px-2 text-right">27.28</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+11.12%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">9.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
-                        <tr class="hover:bg-slate-800/20">
+                        <tr class="hover:bg-cyber-pink/5 transition-colors">
                             <td class="py-4 px-2 text-center text-slate-400">10</td>
-                            <td class="py-4 px-2"><span class="font-mono text-slate-400">2317</span> <span class="font-bold text-slate-200">鴻海</span></td>
-                            <td class="py-4 px-2 text-right font-mono">170.00</td>
-                            <td class="py-4 px-2 text-right font-mono">160.00</td>
-                            <td class="py-4 px-2 text-right font-mono text-red-400">-5.88%</td>
-                            <td class="py-4 px-2 text-right font-mono text-emerald-400">18.00%</td>
-                            <td class="py-4 px-2 text-center"><span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-md border border-emerald-500/20">優良體質</span></td>
+                            <td class="py-4 px-2"><span class="text-cyber-cyan font-bold">1301</span> <span class="text-slate-200">台塑</span></td>
+                            <td class="py-4 px-2 text-right">50.00</td>
+                            <td class="py-4 px-2 text-right">55.00</td>
+                            <td class="py-4 px-2 text-right text-cyber-pink font-bold">+10.00%</td>
+                            <td class="py-4 px-2 text-right text-cyber-cyan">9.00%</td>
+                            <td class="py-4 px-2 text-center"><span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 border border-amber-500/20">待觀察</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- 核心散佈氣泡圖 -->
-            <div class="glass rounded-3xl p-6 lg:col-span-5 flex flex-col justify-between glow">
-                <div>
-                    <h2 class="text-xl font-bold font-title mb-2 text-blue-400 flex items-center gap-2">
-                        🎯 價值選股黃金氣泡散佈圖
+            <!-- 右側 Cyber 散佈圖面板 -->
+            <div class="cyber-card-blue p-6 lg:col-span-5 flex flex-col justify-between">
+                <!-- 金屬拉絲網格角標 -->
+                <div class="absolute left-0 bottom-0 w-16 h-16 cyber-stripes opacity-10"></div>
+                
+                <div class="relative z-10 border-b border-cyber-cyan/20 pb-4 mb-4">
+                    <h2 class="text-lg font-tech font-bold text-cyber-cyan tracking-wider flex items-center gap-2">
+                        &gt; SCATTER_PLOT_PE_VS_ROE
                     </h2>
-                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
-                        此圖表為量化精髓。左上象限為「黃金選股區（高 ROE + 低 PE）」，氣泡越大代表法人綜合評分越高。
+                    <p class="text-[10px] text-slate-400 leading-relaxed mt-2">
+                        黃金坐標：左上象限為「黃金選股區（高 ROE + 低 PE）」，泡泡大小代表法人價值總分，顏色為低估強度。
                     </p>
                 </div>
-                <div class="w-full bg-slate-950/50 rounded-2xl p-2 border border-slate-800/60 overflow-hidden flex items-center justify-center">
-                    <img src="outputs/charts/04_pe_vs_roe_scatter.png" alt="PE vs ROE Scatter Plot" class="max-h-[380px] object-contain hover:scale-[1.03] transition-all duration-300 rounded-lg">
+                <div class="w-full bg-[#040508] rounded-xl p-3 border border-cyber-cyan/15 flex items-center justify-center relative overflow-hidden group">
+                    <img src="outputs/charts/04_pe_vs_roe_scatter.png" alt="PE vs ROE Scatter" class="max-h-[380px] object-contain group-hover:scale-[1.02] transition-transform duration-500 rounded border border-slate-900 shadow-2xl relative z-10">
                 </div>
             </div>
         </div>
 
-        <!-- 下方其餘三張分析圖表卡片 -->
+        <!-- 科技細裝飾線 -->
+        <div class="cyber-tech-line mb-8"></div>
+
+        <!-- 下方三大核心分析圖 -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <!-- 01_top_20_undervalued -->
-            <div class="glass rounded-3xl p-5 glow flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold font-title mb-1 text-slate-200">🔥 TOP 20 最被低估個股長條圖</h3>
-                    <p class="text-xs text-slate-500 mb-4">直觀展示收盤價相較於 5 年平均合理估值的折價幅度</p>
+            <!-- Card 1 -->
+            <div class="cyber-card p-5 flex flex-col justify-between">
+                <div class="border-b border-cyber-pink/20 pb-2 mb-4">
+                    <h3 class="font-tech text-xs font-bold text-slate-200 tracking-widest">&gt; CHART_01: UNDERVALUED_BAR</h3>
                 </div>
-                <div class="bg-slate-950/40 rounded-xl p-1.5 border border-slate-900/60">
-                    <img src="outputs/charts/01_top_20_undervalued.png" alt="Top 20 Undervalued" class="w-full object-cover rounded-lg hover:opacity-90 transition-all">
-                </div>
-            </div>
-
-            <!-- 02_pe_distribution -->
-            <div class="glass rounded-3xl p-5 glow flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold font-title mb-1 text-slate-200">📊 全市場 PE 本益比分佈圖</h3>
-                    <p class="text-xs text-slate-500 mb-4">展示目前所追蹤標的的估值直方圖與紅色的市場中位數線</p>
-                </div>
-                <div class="bg-slate-950/40 rounded-xl p-1.5 border border-slate-900/60">
-                    <img src="outputs/charts/02_pe_distribution.png" alt="PE Distribution" class="w-full object-cover rounded-lg hover:opacity-90 transition-all">
+                <div class="bg-[#040508] rounded-lg p-2 border border-slate-900">
+                    <img src="outputs/charts/01_top_20_undervalued.png" alt="Top 20 Undervalued" class="w-full object-cover rounded hover:opacity-90 transition-opacity">
                 </div>
             </div>
 
-            <!-- 03_sector_comparison -->
-            <div class="glass rounded-3xl p-5 glow flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold font-title mb-1 text-slate-200">🏢 各產業板塊：分數與低估對比</h3>
-                    <p class="text-xs text-slate-500 mb-4">柱狀圖表示產業平均綜合分，紅線折線表示合理折價幅度</p>
+            <!-- Card 2 -->
+            <div class="cyber-card-blue p-5 flex flex-col justify-between">
+                <div class="border-b border-cyber-cyan/20 pb-2 mb-4">
+                    <h3 class="font-tech text-xs font-bold text-slate-200 tracking-widest">&gt; CHART_02: PE_DISTRIBUTION</h3>
                 </div>
-                <div class="bg-slate-950/40 rounded-xl p-1.5 border border-slate-900/60">
-                    <img src="outputs/charts/03_sector_comparison.png" alt="Sector Comparison" class="w-full object-cover rounded-lg hover:opacity-90 transition-all">
+                <div class="bg-[#040508] rounded-lg p-2 border border-slate-900">
+                    <img src="outputs/charts/02_pe_distribution.png" alt="PE Distribution" class="w-full object-cover rounded hover:opacity-90 transition-opacity">
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="cyber-card p-5 flex flex-col justify-between">
+                <div class="border-b border-cyber-pink/20 pb-2 mb-4">
+                    <h3 class="font-tech text-xs font-bold text-slate-200 tracking-widest">&gt; CHART_03: SECTOR_COMPARISON</h3>
+                </div>
+                <div class="bg-[#040508] rounded-lg p-2 border border-slate-900">
+                    <img src="outputs/charts/03_sector_comparison.png" alt="Sector Comparison" class="w-full object-cover rounded hover:opacity-90 transition-opacity">
                 </div>
             </div>
         </section>
 
-        <!-- 腳部宣告 -->
-        <footer class="text-center text-slate-500 text-xs mt-12 py-6 border-t border-slate-900">
-            <p>© 2026 台股本益比量化評價系統 v1.0. 所有權利保留。本網站僅供學術與量化模擬展示，不構成任何實質投資建議。</p>
+        <!-- 腳部聲明板 -->
+        <footer class="text-center font-mono text-[10px] text-slate-600 mt-16 py-6 border-t border-slate-900 relative">
+            <p class="tracking-widest border border-slate-900 py-2 inline-block px-4 bg-slate-950/20">
+                TAIWAN_STOCK_QUANT_VALUATION_TERMINAL_V1_OPERATING_UNDER_SIMULATION
+            </p>
+            <p class="mt-3">本系統數據僅供學術與量化選股模擬預覽，不構成任何實質證券金融投資之操作建議。</p>
         </footer>
     </div>
 </body>
