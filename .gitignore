@@ -1,0 +1,23 @@
+# Python 虛擬環境與快取
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+Pipfile.lock
+poetry.lock
+
+# 編輯器與 IDE 快取
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# 系統快取
+.DS_Store
+Thumbs.db
